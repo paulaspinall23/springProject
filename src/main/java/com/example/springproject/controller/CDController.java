@@ -10,10 +10,14 @@ import java.util.*;
 @RestController
 public class CDController {
 
-
     private final CDService cdService;
     public CDController(CDService cdService) {
         this.cdService = cdService;
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "Hello, Home!";
     }
 
     @GetMapping("/secured")
