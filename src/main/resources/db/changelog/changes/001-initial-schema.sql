@@ -1,0 +1,16 @@
+CREATE TABLE ARTIST
+(
+    id VARCHAR NOT NULL PRIMARY KEY,
+    artist VARCHAR NOT NULL
+);
+
+CREATE TABLE CD
+(
+    id     VARCHAR PRIMARY KEY,
+    name   VARCHAR NOT NULL,
+    artist VARCHAR,
+    artistId VARCHAR,
+    CONSTRAINT FK_ArtistCD FOREIGN KEY (artistId)
+    REFERENCES ARTIST(id)
+);
+

@@ -4,7 +4,6 @@ import com.example.springproject.model.CD;
 import com.example.springproject.services.CDService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
@@ -15,14 +14,10 @@ public class CDController {
         this.cdService = cdService;
     }
 
+
     @GetMapping("/")
     public String home() {
         return "Hello, Home!";
-    }
-
-    @GetMapping("/secured")
-    public String secured() {
-        return "Hello, Secured!";
     }
 
     @RequestMapping("/cd")
