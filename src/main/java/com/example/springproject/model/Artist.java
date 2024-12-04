@@ -1,12 +1,13 @@
 package com.example.springproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,22 +18,22 @@ public class Artist {
 
     @Id
     private UUID id = UUID.randomUUID();
-    private String artist;
+    private String artistName;
 
-    @OneToMany (mappedBy = "artist")
-    private List<CD> cds;
+    @OneToMany (mappedBy = "artist", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CD> cds = new ArrayList<>();
 
     public Artist() {}
 
-    public Artist(UUID id, String artist) {
+    public Artist(UUID id, String artistName) {
         this.id = id;
-        this.artist = artist;
+        this.artistName = artistName;
     }
 
-    public Artist(String artist) {
-        this(UUID.randomUUID(), artist);
+    public Artist(String artistName) {
+        this(UUID.randomUUID(), artistName);
     }
-
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.springproject.services;
 
+import com.example.springproject.dto.CDDTO;
 import com.example.springproject.model.Artist;
 import com.example.springproject.model.CD;
 import com.example.springproject.repository.ArtistRepository;
@@ -16,25 +17,38 @@ public class CDService {
     public CDService(CDRepository cdRepository, ArtistRepository artistRepository) {
         this.cdRepository = cdRepository;
         this.artistRepository = artistRepository;
-        Artist dire = new Artist("Dire Straits");
-        Artist save = artistRepository.save(dire);
-        add(new CD("The Very Best Of Electric Light Orchestra", save));
-//        add(new CD("Rumours", new Artist("Fleetwood Mac")));
-//        add(new CD("The Dark Side of the Moon", new Artist("Pink Floyd")));
-//        add(new CD("Brothers In Arms", dire));
-//        add(new CD("Money for Nothing", dire));
-//        add(new CD("1", new Artist("The Beatles")));
     }
 
-    public ArrayList<CD> getListOfCDs() {
-        return new ArrayList<>(cdRepository.findAll());
+    public List<CDDTO> getListOfCDs() {
+        return cdRepository.findAll()
+                .stream()
+                .map(CDDTO::new)
+                .toList();
     }
 
-    public void add(CD cd) {
+    public void add(UUID id, CDDTO cddto) {
+        CD cd = cddto.toCD();
+        Artist artist = artistRepository.findById(id).orElseThrow();
+        cd.setArtist(artist);
+        cdRepository.save(cd);
+    }
+    
+    public void addByName(String name, CD cd) {
+        Artist artist = artistRepository.findByArtistName(name).orElseThrow();
+        cd.setArtist(artist);
         cdRepository.save(cd);
     }
 
     public Optional<CD> getCDById(UUID id) {
-        return Optional.of(cdRepository.getReferenceById(id));
+        return cdRepository.findById(id);
+    }
+
+    public ArrayList<CD> getCDsByArtistId(UUID id) {
+        return new ArrayList<>(cdRepository.findByArtistId(id));
+    }
+
+    public ArrayList<CD> getCDsByArtistName(String name) {
+        Artist artistId = artistRepository.findByArtistName(name).orElseThrow();
+        return new ArrayList<>(cdRepository.findByArtistId(artistId.getId()));
     }
 }

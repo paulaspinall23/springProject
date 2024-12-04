@@ -1,9 +1,9 @@
 package com.example.springproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.UUID;
 
 @Getter
@@ -13,9 +13,11 @@ public class CD {
 
     @Id
     private UUID id = UUID.randomUUID();
+    @Getter
     private String name;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JsonIgnore
     private Artist artist;
 
     public CD() {}
