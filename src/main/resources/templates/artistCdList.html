@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html layout:decorate="layouts/defaultLayout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<body>
+<div class="row justify-content-center mt-5" layout:fragment="content">
+    <div class="text-center">
+        <h1>CD Library</h1>
+    </div>
+    <div class="col-auto ps-5 mt-5">
+        <table class="table table-bordered table-success table-striped table-hover">
+            <thead class="mb-3">
+            <tr>
+                <td>Title</td>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <tr th:each="cd: ${ArtistCDList}">
+                <td th:text="${cd.getName()}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

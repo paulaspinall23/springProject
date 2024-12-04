@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html layout:decorate="layouts/defaultLayout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<body>
+    <div class="row justify-content mt-5" layout:fragment="content">
+        <div class="ps-4">
+            <h1>Current CD List</h1>
+        </div>
+        <div class="col-md-6 list-group ps-5 mt-5 w-25">
+            <tr th:each="cd: ${CDs}">
+                <a href="/cdtable" class="list-group-item list-group-item-action list-group-item-success"> <td th:text="${cd.name()}" /></a>
+            </tr>
+        </div>
+        <form class="col-4 offset-md-2" th:action="@{/cdlist/cd}" th:object="${tlCDByArtist}" method="post">
+            <legend>Add a CD</legend>
+            <div class="mb-3 pt-3">
+                <label for="checkForArtistSelect" class="form-label">Check for existing artist</label>
+                <select id="checkForArtistSelect" class="form-select" aria-label="Check for existing artist" th:field="*{artist}">
+<!--                    <option selected>Check for artist</option>-->
+                    <option th:each="artist: ${Artist}" th:value="${artist.artistName}" th:text="${artist.artistName}"></option>
+<!--                    <option th:each="selectedArtist: ${Artist}" th:value="${selectedArtist.artistName}" th:text="${selectedArtist.artistName}"></option>-->
+                </select>
+                <p>* If the artist doesn't appear, please add it on the Artists page</p>
+            </div>
+            <div class="mb-3">
+                <label for="artistTextInput" class="form-label">Add the CD title</label>
+                <input type="text" id="artistTextInput" class="form-control" th:field="*{name}">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
