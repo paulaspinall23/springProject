@@ -5,6 +5,8 @@ import com.example.springproject.model.Artist;
 import com.example.springproject.model.CD;
 import com.example.springproject.repository.ArtistRepository;
 import com.example.springproject.repository.CDRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -51,4 +53,5 @@ public class CDService {
         Artist artistId = artistRepository.findByArtistName(name).orElseThrow();
         return new ArrayList<>(cdRepository.findByArtistId(artistId.getId()));
     }
+
 }

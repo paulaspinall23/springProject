@@ -13,19 +13,18 @@
 <body>
 <div th:replace="~{layouts/header :: header}"></div>
 <div>
-    <div class="row justify-content-center mt-5" th:if="${#ctx.containsVariable('Artist')}">
-
+    <div class="row justify-content-center mt-5">
         <div class="text-center">
             <h1  th:text="'Albums for ' + ${Artist}"></h1>
         </div>
         <div class="col-md-6 list-group ps-5 mt-5 w-25">
-            <tr th:each="cd: ${ArtistCDList}">
-                <a th:href="@{/tracklist}" class="list-group-item list-group-item-action list-group-item-success"> <td th:text="${cd.getName()}" /></a>
+<!--            <tr th:each="title: ${titles}">-->
+<!--                <td class="list-group-item list-group-item-action list-group-item-success" th:text="${title}"/>-->
+<!--            </tr>-->
+            <tr th:each="title: ${titles}">
+                <a th:href="@{/home}" class="list-group-item list-group-item-action list-group-item-success"> <td th:text="${title}" /></a>
             </tr>
         </div>
-    </div>
-    <div class="text-center" th:unless="${#ctx.containsVariable('Artist')}">
-        <h2>404 artist not found</h2>
     </div>
 </div>
 </body>
