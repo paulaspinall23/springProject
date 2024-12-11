@@ -19,12 +19,14 @@ public class Artist {
     @Id
     private UUID id = UUID.randomUUID();
     private String artistName;
+    private String musicBrainzId;
 
     @OneToMany (mappedBy = "artist", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<CD> cds = new ArrayList<>();
 
     public Artist() {}
+
 
     public Artist(UUID id, String artistName) {
         this.id = id;

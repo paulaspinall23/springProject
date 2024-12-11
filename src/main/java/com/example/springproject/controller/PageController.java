@@ -3,16 +3,15 @@ package com.example.springproject.controller;
 import com.example.springproject.dto.CDDTO;
 import com.example.springproject.model.Artist;
 import com.example.springproject.model.CD;
+import com.example.springproject.response.MusicBrainzAPI;
+import com.example.springproject.response.MusicBrainzAlbum;
 import com.example.springproject.services.ArtistService;
 import com.example.springproject.services.CDService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.channels.Selector;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -24,10 +23,9 @@ public class PageController {
         this.cdService = cdService;
         this.artistService = artistService;
     }
-    @GetMapping("/cdtable")
-    public String getCDTable(Model model) {
-        model.addAttribute("CDTable", artistService.getListOfArtists());
-//        model.addAttribute("CDTable", artistService.getListOfArtists());
+
+    @GetMapping("/home")
+    public String getCDTable() {
         return "home";
     }
 
@@ -52,17 +50,58 @@ public class PageController {
         return "cds";
     }
 
-    @PostMapping("/cdlist/cd")
-    public String addNewCDFromArtist(@ModelAttribute("tlCDByArtist") String artist, CD cd){
-        cdService.addByName(artist, cd);
-        return "redirect:cds";
+    @PostMapping("/cdlist")
+    public String addNewCDFromArtist(CDDTO cd){
+        cdService.addByName(cd.artist(), cd.toCD());
+        return "redirect:cdlist";
     }
+
+//    @RequestMapping("/artist/{artistid}/cdlist")
+//    public String getCDListByArtist(Model model, @PathVariable UUID artistid) {
+//        Optional<Artist> artistById = artistService.getArtistById(artistid);
+//        if (artistById.isPresent()) {
+//            model.addAttribute("Artist", artistById
+//                        .map(Artist::getArtistName).orElse(""));
+//            model.addAttribute("ArtistCDList", cdService.getCDsByArtistId(artistid));
+//        }
+//        return "artistCdList";
+//    }
 
     @RequestMapping("/artist/{artistid}/cdlist")
-    public String getCDListByArtist(Model model, @PathVariable UUID artistid) {
-        model.addAttribute("ArtistCDList", cdService.getCDsByArtistId(artistid));
-        return "artistCdList";
+    public String getCDListByArtistNew(Model model, @PathVariable UUID artistid) throws Exception {
+        Optional<Artist> artistById = artistService.getArtistById(artistid);
+        if (artistById.isPresent()) {
+            Artist artist = artistById.get();
+            String musicBrainzId = artist.getMusicBrainzId();
+            List<MusicBrainzAlbum> albums = MusicBrainzAPI.getAlbums(musicBrainzId);
+            List<String> titles = albums.stream().map(MusicBrainzAlbum::getTitle).toList();
+            model.addAttribute("titles", titles);
+        }
+
+        model.addAttribute("Artist", artistById
+                .map(Artist::getArtistName).orElse(""));
+//        return "artistCdList";
+        return "tracks";
     }
 
+//    @RequestMapping("/tracklist")
+//    public String getTitles(Model model) throws Exception {
+//        String jsonResponse = MusicBrainzAPI.getAlbums();
+//        List<String> titles = cdService.getAlbumTitles(jsonResponse);
+//        model.addAttribute("titles", titles);
+//        return "tracks";
+//    }
 
+//    @RequestMapping("/tracklistnew")
+//    public String getTitlesxml(Model model) {
+//        try {
+//            String response = MusicBrainzAPI.getApiResponse("http://musicbrainz.org/ws/2/recording?query=arid:614e3804-7d34-41ba-857f-811bad7c2b7a");
+//            NodeList nodeList = XMLParser.parseXML(response);
+//            List<String> titles = TitleExtractor.extractTitles(nodeList).;
+//            model.addAttribute("titles", titles);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "tracks";
+//    }
 }

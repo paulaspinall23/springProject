@@ -13,6 +13,7 @@ public class CD {
 
     @Id
     private UUID id = UUID.randomUUID();
+
     @Getter
     private String name;
 
@@ -30,6 +31,10 @@ public class CD {
 
     public CD(String name, Artist artist) {
         this(UUID.randomUUID(), name, artist);
+    }
+
+    public String getArtistName() {
+        return artist.getArtistName();
     }
 }
 

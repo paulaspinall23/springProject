@@ -1,7 +1,8 @@
 CREATE TABLE ARTIST
 (
     id VARCHAR PRIMARY KEY,
-    artist_Name VARCHAR NOT NULL UNIQUE
+    artist_Name VARCHAR NOT NULL UNIQUE,
+    music_brainz_id VARCHAR
 );
 
 CREATE TABLE CD
@@ -13,12 +14,12 @@ CREATE TABLE CD
     REFERENCES ARTIST(id)
 );
 
-INSERT INTO ARTIST (id, artist_Name)
-VALUES (RANDOM_UUID(), 'Dire Straits'),
-       (RANDOM_UUID(), 'E.L.O'),
-       (RANDOM_UUID(), 'Fleetwood Mac'),
-       (RANDOM_UUID(), 'Pink Floyd'),
-       (RANDOM_UUID(), 'The Beatles');
+INSERT INTO ARTIST (music_brainz_id, artist_Name, id)
+VALUES ('614e3804-7d34-41ba-857f-811bad7c2b7a', 'Dire Straits', RANDOM_UUID()),
+       ('0c502791-4ee9-4c5f-9696-0602b721ff3b', 'E.L.O', RANDOM_UUID()),
+       ('bd13909f-1c29-4c27-a874-d4aaf27c5b1a', 'Fleetwood Mac', RANDOM_UUID()),
+       ('83d91898-7763-47d7-b03b-b92132375c47', 'Pink Floyd', RANDOM_UUID()),
+       ('b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d', 'The Beatles', RANDOM_UUID());
 
 
 INSERT INTO CD (id, name, artist_id)
